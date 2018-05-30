@@ -1,0 +1,111 @@
+<div class="container">
+
+  <div class="row">
+
+    <div class="bloco-contato">
+
+      <div class="col-sm-3 filtro">
+        <a class="filtro__button" (click)="ordernar('nome')">Ordenar Nome</a>
+        <a class="filtro__button" (click)="ordernar('data_nascimento')">Ordenar Nascimento</a>
+        <a class="filtro__button" (click)="filtrarPorGenero('Masculino')">Filtrar Homens</a>
+        <a class="filtro__button" (click)="filtrarPorGenero('Feminino')">Filtrar Mulheres</a>
+        <a class="filtro__button" (click)="limparFiltros()">Limpar Filtro</a>
+      </div>
+
+      <div class="col-sm-9 form">
+
+        <input type="text"
+          class="form-control"
+          [(ngModel)]="pesquisaDoUsuario"
+          placeholder="Há {{this.contatos.length}} pessoa(s) que podem ser buscadas nessa lista">
+
+        <table class=" table table-striped ">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>Sexo</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr *ngFor="
+            let contato of contatosFiltrados.length > 0 ? contatosFiltrados : contatos
+            | filter: pesquisaDoUsuario" (click)="selecionarContato(contato)">
+            <td> {{ contato.id }}</td>
+            <td> {{ contato.nome | uppercase }}</td>
+            <td> {{ contato.data_nascimento | date:'dd/MM/yyyy' }}</td>
+            <td [ngClass]="adicionaEstiloSexo(contato)"></td>
+            <td (click)="removerContato(contato)">
+              <i class="fas fa-trash-alt contatoForm__field--botao-remover"></i>
+            </td>
+            <td class="fas fa-info-circle" (click)="selecionarContato(contato)"></td>
+          </tr>
+        </table>
+
+        <div class="row button">
+          <button
+            class="btn btn-primary btn-block form__add "
+            (click)="adicionarContato()"
+            *ngIf="!adicionarFoiClicado && !contatoFoiSelecionado">
+              Adicionar
+          </button>
+        </div>
+
+        <form *ngIf="adicionarFoiClicado || contatoFoiSelecionado"
+        [formGroup]="formularioContato" class="contatoForm">
+
+          <div class="row ">
+
+            <div class="col-sm-12">
+              <label class="contatoForm__label">Name:</label>
+              <input class="form-control contatoForm__field--first " type="text" formControlName="nome" />
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+              <label class="contatoForm__label ">Dt Nascimento</label>
+              <input class="form-control contatoForm__field " type="date" formControlName="data_nascimento" />
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+              <label class="contatoForm__label">Sexo:</label>
+              <select class="form-control contatoForm__field--last" formControlName="sexo">
+                <option value="" selected disabled>Selecione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+              </select>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <button
+                class="btn btn-danger btn-block contatoForm__field--button-cancel"
+                type="reset"
+                (click)="cancelarEdicao()">
+                  Cancelar
+              </button>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12" *ngIf="!contatoFoiSelecionado">
+              <button
+                class="btn btn-primary btn-block contatoForm__field--button-add"
+                (click)="salvarContato(formularioContato.value) "
+                [disabled]="!formularioContato.valid ">
+                  Salvar
+              </button>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12 " *ngIf="contatoFoiSelecionado">
+              <button
+                class="btn btn-primary btn-block contatoForm__field--button-add"
+                (click)="atualizarContato(contatoSelecionado)"
+                [disabled]="!formularioContato.valid">
+                  Atualizar
+              </button>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title">Confirmar exclusão</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>
+    Tem certeza que deseja remover {{ contato.sexo === 'Masculino' ? 'o' : 'a' }}
+    <strong>{{contato.nome}}</strong>
+    da sua lista de contatos? Pode ser que você sinta falta {{ contato.sexo === 'Masculino' ? 'dele' : 'dela' }}... {{ contato.sexo
+    === 'Masculino' ? 'Ele' : 'Ela' }} nasceu em
+    <strong>{{ contato.data_nascimento | date: 'dd/MM/yyyy' }}</strong>, parece que {{ contato.sexo === 'Masculino' ? 'ele' : 'ela'
+    }} tem muito pra viver, não?
+  </p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="activeModal.close(true)">Remover</button>
+  <button type="button" class="btn btn-dark" (click)="activeModal.close(false)">Cancelar</button>
+</div>
